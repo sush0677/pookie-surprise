@@ -9,21 +9,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Outfit:wght@300;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Outfit:wght@300;500;700&display=swap"
         rel="stylesheet">
 
     <style>
-        /* CSS DESIGN SYSTEM */
         :root {
             --primary: #ff7eb9;
             --secondary: #ff65a3;
             --bg-gradient: radial-gradient(circle at top, #fff5f8, #ffe3ec);
             --card-white: rgba(255, 255, 255, 0.85);
             --text-dark: #4a4a4a;
-            --text-muted: #6e6e6e;
         }
 
-        /* Essential Reset & Body */
         * {
             margin: 0;
             padding: 0;
@@ -35,14 +32,14 @@
             background: var(--bg-gradient);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             overflow-x: hidden;
             color: var(--text-dark);
             padding: 20px;
         }
 
-        /* --- BACKGROUND LAYER --- */
+        /* --- BACKGROUND ANIMATION --- */
         .decoration-layer {
             position: fixed;
             top: 0;
@@ -77,182 +74,265 @@
             }
         }
 
-        /* --- MAIN CARD CONTAINER --- */
-        .wrapper {
+        /* --- PERSISTENT MUSIC --- */
+        .music-player {
             position: relative;
-            z-index: 10;
+            z-index: 100;
             width: 100%;
-            max-width: 650px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            animation: fadeIn 1.2s ease-out forwards;
+            max-width: 600px;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-out;
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeInDown {
             from {
                 opacity: 0;
-                transform: scale(0.95);
+                transform: translateY(-20px);
             }
 
             to {
                 opacity: 1;
-                transform: scale(1);
+                transform: translateY(0);
             }
         }
 
-        /* --- THE LETTER CARD --- */
-        .letter-card {
+        /* --- INTERACTIVE CONTAINER --- */
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .section {
+            display: none;
+            width: 100%;
             background: var(--card-white);
             backdrop-filter: blur(15px);
-            padding: clamp(1.5rem, 5vw, 3.5rem);
+            padding: clamp(1.5rem, 5vw, 3rem);
             border-radius: 40px;
             box-shadow: 0 30px 60px rgba(255, 101, 163, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.6);
-            position: relative;
+            text-align: center;
         }
 
+        .section.active {
+            display: block;
+            animation: slideIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* --- TYPOGRAPHY --- */
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(2.5rem, 8vw, 3.8rem);
+            font-size: clamp(2rem, 6vw, 3.5rem);
             color: var(--secondary);
-            margin-bottom: 2rem;
-            text-align: center;
+            margin-bottom: 1.5rem;
         }
 
-        .message-body {
-            line-height: 1.9;
-            font-size: clamp(0.95rem, 3vw, 1.2rem);
-            color: var(--text-dark);
-            margin-bottom: 25px;
+        p {
+            line-height: 1.6;
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            margin-bottom: 20px;
         }
 
-        .message-body b {
+        .emoji-header {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* --- BUTTONS --- */
+        .btn {
+            background: var(--secondary);
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s all;
+            box-shadow: 0 10px 20px rgba(255, 101, 163, 0.2);
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            background: #ff478e;
+        }
+
+        /* --- UPGRADED LETTER PAGE --- */
+        .letter-content {
+            text-align: left;
+            line-height: 1.8;
+            font-size: clamp(0.95rem, 3vw, 1.15rem);
+            margin-bottom: 30px;
+        }
+
+        .letter-content b {
             color: var(--secondary);
-            font-weight: 500;
-        }
-
-        .signature-group {
-            text-align: center;
-            margin-top: 2rem;
         }
 
         .signature {
             font-family: 'Dancing Script', cursive;
-            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-size: 2.2rem;
             color: var(--secondary);
-            display: block;
         }
 
-        .forever-text {
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            opacity: 0.6;
-            margin-top: 10px;
-            display: block;
+        /* --- FLOWER GARDEN --- */
+        .flower-garden {
+            font-size: clamp(3rem, 10vw, 5rem);
+            letter-spacing: 10px;
+            margin: 20px 0;
+            animation: sway 3s ease-in-out infinite alternate;
         }
 
-        /* --- SPOTIFY EMBED --- */
-        .spotify-container {
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            background: rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .spotify-container:hover {
-            transform: scale(1.02);
-        }
-
-        /* --- INTERACTIVE BUTTON --- */
-        .interact-btn {
-            background: var(--secondary);
-            color: white;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Outfit', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 8px 20px rgba(255, 101, 163, 0.3);
-            margin: 20px auto 0;
-            display: block;
-        }
-
-        .interact-btn:active {
-            transform: scale(0.9);
-        }
-
-        .interact-btn:hover {
-            background: #ff478e;
-            box-shadow: 0 12px 25px rgba(255, 101, 163, 0.4);
-        }
-
-        /* Responsive Tweaks */
-        @media (max-width: 480px) {
-            .wrapper {
-                gap: 15px;
+        @keyframes sway {
+            from {
+                transform: rotate(-5deg);
             }
 
-            .letter-card {
-                padding: 1.5rem;
-                border-radius: 25px;
+            to {
+                transform: rotate(5deg);
             }
         }
     </style>
 </head>
 
 <body>
-    <!-- Background Decor -->
+    <!-- Background Moving Hearts -->
     <div class="decoration-layer" id="bg-decoration"></div>
 
-    <main class="wrapper">
-        <!-- Spotify Embed -->
-        <div class="spotify-container">
-            <iframe style="border-radius:12px"
-                src="https://open.spotify.com/embed/track/0eCajpR75pDW0r64U6hP2x?utm_source=generator&theme=0"
-                width="100%" height="152" frameBorder="0" allowfullscreen=""
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
-            </iframe>
+    <!-- Persistent Spotify Music (Stays here while pages change) -->
+    <header class="music-player">
+        <iframe style="border-radius:20px"
+            src="https://open.spotify.com/embed/track/0eCajpR75pDW0r64U6hP2x?utm_source=generator&theme=0" width="100%"
+            height="152" frameBorder="0" allowfullscreen=""
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+        </iframe>
+    </header>
+
+    <!-- Content Sections -->
+    <main class="content-wrapper">
+
+        <!-- Step 1: Entry -->
+        <div id="step1" class="section active">
+            <span class="emoji-header">✨</span>
+            <h1>Wait! Stop right there.</h1>
+            <p>I just wanted to take a second to remind you...</p>
+            <p style="font-weight: 700; color: var(--secondary);">I am so incredibly lucky to have you.</p>
+            <button class="btn" onclick="showStep(2)">Click for a surprise 💝</button>
         </div>
 
-        <!-- The Letter -->
-        <div class="letter-card">
-            <h1>My Dearest,</h1>
+        <!-- Step 2: Hello -->
+        <div id="step2" class="section">
+            <span class="emoji-header">🐱</span>
+            <h1>Hello pookie, how are you?</h1>
+            <p>I hope your day is as beautiful as your smile!</p>
+            <button class="btn" onclick="showStep(3)">Next! ✨</button>
+        </div>
 
-            <div class="message-body">
+        <!-- Step 3: Check-in -->
+        <div id="step3" class="section">
+            <span class="emoji-header">🥤</span>
+            <h1>Quick Check-in!</h1>
+            <p>Did you drink enough water today?</p>
+            <p>Have you eaten something good?</p>
+            <p style="font-style: italic; font-size: 0.9rem; opacity: 0.7;">Your pookie needs you to stay healthy and
+                energized! 💧</p>
+            <button class="btn" onclick="showStep(4)">I'm all good! 🥰</button>
+        </div>
+
+        <!-- Step 4: Reminders -->
+        <div id="step4" class="section">
+            <span class="emoji-header">💌</span>
+            <h1>A few little reminders...</h1>
+            <div style="text-align: left; display: inline-block; margin-bottom: 20px;">
+                <p>⭐ You are my favorite person.</p>
+                <p>🌸 You make everything better.</p>
+                <p>💖 I'm always in your corner.</p>
+            </div>
+            <br>
+            <button class="btn" onclick="showStep(5)">Read the letter 📖</button>
+        </div>
+
+        <!-- Step 5: THE LETTER (Upgraded) -->
+        <div id="step5" class="section">
+            <h1>My Dearest,</h1>
+            <div class="letter-content">
                 <p>I’ve just been sitting here thinking about how much I love you, and I wanted to let you know
                     something important.</p>
                 <br>
                 <p><b>You are my peace.</b> No matter how loud or chaotic the world gets, you’re the only person I can
                     truly be myself with. When I’m with you, I feel lighter—like I can be a child again and just have
-                    fun without any worries. You have this incredible way of making everything feel okay just by
-                    existing.</p>
+                    fun without any worries.</p>
                 <br>
                 <p>You are my absolute support system, and I wanted to surprise you with this because I’m so incredibly
-                    proud of the woman you are. I’ve watched you grow and become even stronger, and it’s something I
-                    admire about you every single day.</p>
+                    proud of the woman you are. I’ve watched you grow and become even stronger.</p>
                 <br>
-                <p>I want you to know that <b>I am here for you</b>—now, tomorrow, and always. Whatever you need,
-                    whenever you need it, I’m in your corner. Thank you for being my person and for building all these
-                    beautiful memories with me.</p>
+                <p>I want you to know that <b>I am here for you</b>—now, tomorrow, and always. Thank you for being my
+                    person and for building all these beautiful memories with me.</p>
             </div>
-
-            <div class="signature-group">
-                <span class="signature">I love you so much,</span>
-                <span class="forever-text">— Always and Forever —</span>
-                <button class="interact-btn" onclick="RainHearts()">Send Love ❤️</button>
-            </div>
+            <span class="signature">I love you so much,</span>
+            <br>
+            <button class="btn" onclick="showStep(6)">Look behind you! (virtually) 🌹</button>
         </div>
+
+        <!-- Step 6: Flowers (Upgraded) -->
+        <div id="step6" class="section">
+            <h1>Flowers for you...</h1>
+            <p>...from your pookie dookie and dudu</p>
+            <div class="flower-garden">🌹🌷🌸🌼🌻</div>
+            <p style="font-weight: 700; color: var(--secondary); margin-top: 20px;">(I love you so much!)</p>
+            <button class="btn" onclick="RainHearts()">Rain Love! ❤️</button>
+        </div>
+
     </main>
 
     <script>
-        /**
-         * ANIMATION LOGIC
-         */
+        // Navigation Logic
+        function showStep(stepNum) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            // Show target section
+            const next = document.getElementById('step' + stepNum);
+            if (next) next.classList.add('active');
+
+            // Special: If step 6, burst hearts automatically
+            if (stepNum === 6) RainHearts();
+        }
+
+        // --- HEART ANIMATION ---
         const decoLayer = document.getElementById('bg-decoration');
 
         function createHeart(isBurst = false) {
@@ -260,7 +340,6 @@
             heart.classList.add('heart');
             heart.innerHTML = '❤️';
 
-            // Randomize position and animation properties
             const startX = Math.random() * 100;
             const duration = isBurst ? (Math.random() * 2 + 2) : (Math.random() * 3 + 4);
             const size = (Math.random() * 1 + 1);
@@ -269,23 +348,16 @@
             heart.style.animationDuration = duration + 's';
             heart.style.fontSize = size + 'rem';
 
-            if (isBurst) {
-                heart.style.filter = 'drop-shadow(0 0 10px rgba(255,101,163,0.5))';
-            }
-
             decoLayer.appendChild(heart);
-
-            // Cleanup
             setTimeout(() => heart.remove(), duration * 1000);
         }
 
-        // Automatic slow rain of hearts
+        // Background Atmosphere
         setInterval(() => createHeart(false), 800);
 
-        // Interaction Burst
         function RainHearts() {
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => createHeart(true), i * 80);
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => createHeart(true), i * 70);
             }
         }
     </script>
