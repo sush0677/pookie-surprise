@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Message for You ❤️</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #ff758f;
+            --secondary: #ffb3c1;
+            --bg-start: #fff0f3;
+            --bg-end: #ffeef2;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --text-main: #4a4a4a;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent scrolling for the full-screen experience */
+            position: relative;
+        }
+
+        /* Ambient glowing background blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 175, 189, 0.4);
+            top: -100px;
+            left: -100px;
+        }
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 137, 163, 0.3);
+            bottom: -50px;
+            right: -50px;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(30px) scale(1.1); }
+        }
+
+        .card-container {
+            z-index: 10;
+            perspective: 1000px;
+            width: 100%;
+            max-width: 550px;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(255, 175, 189, 0.3);
+            text-align: center;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section { 
+            display: none; 
+            opacity: 0;
+        }
+
+        .section.active { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeInScale 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; 
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        h1 { 
+            color: var(--primary); 
+            font-size: 32px; 
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        p { 
+            line-height: 1.7; 
+            font-size: 18px; 
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .emoji-container {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            margin: 0 auto 30px;
+            box-shadow: 0 10px 25px rgba(255, 117, 143, 0.2);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ff758f, #ffb3c1);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 117, 143, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover { 
+            transform: translateY(-3px) scale(1.02); 
+            box-shadow: 0 12px 30px rgba(255, 117, 143, 0.6); 
+        }
+        
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        .letter-text {
+            text-align: left;
+            font-size: 18px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .letter-text::before {
+            content: '"';
+            font-family: 'Dancing Script', cursive;
+            font-size: 60px;
+            color: var(--secondary);
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            opacity: 0.5;
+        }
+
+        .handwritten {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            color: var(--primary);
+            margin-top: 15px;
+            display: block;
+            text-align: right;
+        }
+
+        .flower-garden { 
+            font-size: 60px; 
+            margin: 30px 0; 
+            letter-spacing: 15px; 
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+            animation: gentleSway 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes gentleSway {
+            0% { transform: rotate(-2deg); }
+            100% { transform: rotate(2deg); }
+        }
+
+        /* Falling Petals */
+        .petal {
+            position: absolute;
+            background-color: var(--secondary);
+            border-radius: 150% 0 150% 0;
+            animation: fall 10s linear infinite;
+            opacity: 0.6;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -10%;
+                transform: translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% {
+                top: 110%;
+                transform: translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .reminder-list {
+            text-align: left;
+            margin: 0 auto;
+            width: max-content;
+        }
+        .reminder-list p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 20px;
+        }
+        .reminder-list span {
+            color: var(--primary);
+            font-size: 24px;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Ambient Backgrounds -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<!-- Petals Container -->
+<div id="petals"></div>
+
+<div class="card-container">
+    <div class="card">
+        <div id="step1" class="section active">
+            <div class="emoji-container">✨</div>
+            <h1>Wait! Stop right there.</h1>
+            <p>I just wanted to take a second to remind you...</p>
+            <p style="font-weight: 600; font-size: 22px; color: var(--primary); margin-top: 10px;">I am so incredibly lucky to have you.</p>
+            <button class="btn" onclick="nextStep(2)">Click for a surprise 💝</button>
+        </div>
+
+        <div id="step2" class="section">
+            <div class="emoji-container">🐱</div>
+            <h1>Hello pookie, how are you?</h1>
+            <p>I hope your day is as beautiful as your smile!</p>
+            <button class="btn" onclick="nextStep(3)">Next! ✨</button>
+        </div>
+
+        <div id="step3" class="section">
+            <div class="emoji-container">🥤</div>
+            <h1>Quick Check-in!</h1>
+            <p>Did you drink enough water today?<br>Have you eaten something good?</p>
+            <p style="font-style: italic; color: #777;">Your pookie needs you to stay healthy and energized! Go take a sip of water now if you haven't. 💧</p>
+            <button class="btn" onclick="nextStep(4)">I'm all good! 🥰</button>
+        </div>
+
+        <div id="step4" class="section">
+            <div class="emoji-container">💌</div>
+            <h1>A few little reminders...</h1>
+            <div class="reminder-list">
+                <p><span>⭐</span> You are my favorite person.</p>
+                <p><span>🌸</span> You make everything better.</p>
+                <p><span>💖</span> I'm always in your corner.</p>
+            </div>
+            <button class="btn" onclick="nextStep(5)">Read the letter 📖</button>
+        </div>
+
+        <div id="step5" class="section">
+            <h1>To My Everything,</h1>
+            <div class="letter-text">
+                I was just thinking about how much happiness you bring into my life. Every conversation with you is the highlight of my day. You're kind, you're smart, and you're absolutely stunning. 
+                <br><br>
+                Thank you for being my peace. I can't wait for all the memories we are going to build together.
+                <span class="handwritten">Forever Yours ❤️</span>
+            </div>
+            <button class="btn" onclick="nextStep(6)">Look behind you (virtually!) 🌹</button>
+        </div>
+
+        <div id="step6" class="section">
+            <h1 style="font-family: 'Dancing Script', cursive; font-size: 45px;">These are flowers for you...</h1>
+            <p style="font-size: 20px;">...from your pookie dookie and dudu</p>
+            <div class="flower-garden">🌹🌷🌸🌼🌻</div>
+            <p style="font-size: 16px; margin-top: 20px; font-weight: 600; color: var(--primary);">(I love you so much!)</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Navigation logic
+    function nextStep(step) {
+        const sections = document.querySelectorAll('.section');
+        // Fade out current
+        sections.forEach(s => {
+            if (s.classList.contains('active')) {
+                s.style.animation = 'none'; // reset
+                s.style.opacity = '0';
+                setTimeout(() => {
+                    s.classList.remove('active');
+                    // Fade in next
+                    const next = document.getElementById('step' + step);
+                    next.classList.add('active');
+                    next.style.animation = 'fadeInScale 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                    
+                    // Add more petals on final slide
+                    if(step === 6) createPetals(20);
+                }, 300); // Wait for transition
+            }
+        });
+    }
+
+    // Creating falling petals
+    function createPetals(count = 15) {
+        const container = document.getElementById('petals');
+        for (let i = 0; i < count; i++) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            
+            // Random properties
+            const size = Math.random() * 15 + 10; // 10px to 25px
+            const left = Math.random() * 100; // 0% to 100%
+            const delay = Math.random() * 5; // 0s to 5s
+            const duration = Math.random() * 5 + 7; // 7s to 12s
+            
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left = `${left}vw`;
+            petal.style.animationDelay = `${delay}s`;
+            petal.style.animationDuration = `${duration}s`;
+            
+            // Random shade of pink/red
+            const hue = Math.floor(Math.random() * 40) + 330; // 330 to 10 (pink to red)
+            petal.style.backgroundColor = `hsl(${hue}, 100%, 75%)`;
+            
+            container.appendChild(petal);
+        }
+    }
+
+    // Start with some petals
+    createPetals(15);
+</script>
+
+</body>
+</html>
